@@ -13,8 +13,16 @@ chatForm.addEventListener('submit', (e) => {
 });
 
 socket.on('chat message', (msg) => {
+    addMessage(msg);
+});
+
+socket.on('chat history', (history) => {
+    history.forEach(msg => addMessage(msg));
+});
+
+function addMessage(msg) {
     const li = document.createElement('li');
     li.textContent = msg;
     messages.appendChild(li);
     window.scrollTo(0, document.body.scrollHeight);
-});
+}
