@@ -6,10 +6,18 @@ const port = process.env.PORT || 3000;
 
 app.use(express.static('public'));
 
+let chatHistory = [];
+
 io.on('connection', (socket) => {
   console.log('A user connected');
   
+  socket.emit('chat history', chatHistory);
+
   socket.on('chat message', (msg) => {
+    chatHistory.push(msg);
+    if (chatHistory.length > 50) {  
+      chatHistory.shift();
+    }
     io.emit('chat message', msg);
   });
 
